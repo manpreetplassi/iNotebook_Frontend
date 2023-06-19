@@ -7,6 +7,7 @@ const NoteState = (props) => {
     const initialNotes = []
     const [notes, setNotes] = useState(initialNotes);
     const [displaytoggle,setDisplaytoggle] = useState("none") //state tu show pop dialogbox
+    const [isLogin, setIsLogin] = useState(false) //state tu show login button
 
 
     // get notes
@@ -101,12 +102,10 @@ const NoteState = (props) => {
     }
 
     return (
-        <NoteContext.Provider value={{ host, notes, setNotes, addNote, deleteNote, editNote, fetchNotes, displaytoggle,setDisplaytoggle, textmessege, setMessege, alertVisible, setAlertVisible, showAlert}}>
+        <NoteContext.Provider value={{ host,isLogin, setIsLogin, notes, setNotes, addNote, deleteNote, editNote, fetchNotes, displaytoggle,setDisplaytoggle, textmessege, setMessege, alertVisible, setAlertVisible, showAlert}}>
             {props.children}
         </NoteContext.Provider>
     )
 }
 export default NoteState;
 
-
-  // "homepage": "https://github.com/manpreetplassi/iNotebook_Frontend.git",

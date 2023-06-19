@@ -1,4 +1,7 @@
-import React, {  useState } from 'react'
+import React, { useContext, useState } from 'react'
+import noteContext from "../context/notes/noteContext";
+import maleavatar from '../icons/male_avtar.png'
+
 import {
   Link,
   Outlet,
@@ -12,9 +15,11 @@ import {
 } from '@heroicons/react/24/outline'
 
 export default function Navbar() {
-
   let location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  const context = useContext(noteContext);
+  const { isLogin } = context;
   return (
     <>
       <header className="bg-white">
@@ -46,13 +51,13 @@ export default function Navbar() {
             <Link to="/signup" className={`text-sm font-semibold leading-6 text-gray-900 ${location.pathname === "/signup" ? "active" : ""}`}>
               SignUp
             </Link>
-            <Link to="/login" className={`text-sm font-semibold leading-6 text-gray-900 ${location.pathname === "/login" ? "active" : ""}`}>
-              Login
+            <Link to="/help" className={`text-sm font-semibold leading-6 text-gray-900 ${location.pathname === "/login" ? "active" : ""}`}>
+              Help
             </Link>
           </Popover.Group>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to="/login" className={`text-sm font-semibold leading-6 text-gray-900 ${location.pathname === "/home" ? "active" : ""}`}>
-              Log in <span aria-hidden="true">&rarr;</span>
+            <Link to={isLogin ? "/userProfile" : "/login"} className={`text-sm font-semibold leading-6 text-gray-900 ${location.pathname === "/home" ? "active" : ""}`}>
+            { isLogin ? (<img src={maleavatar} alt='avatar'className={`h-8 w-auto`}/>) : ("Login") } 
             </Link>
           </div>
         </nav>
@@ -60,11 +65,7 @@ export default function Navbar() {
           <div className="fixed inset-0 z-10" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <Link to="/home" className="-m-1.5 p-1.5">
-              <div className='text-xl font-medium'>iNotebook</div> 
-                {/* <span className="sr-only">iNotebook</span>
-                <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt=""/> */}
-              </Link>
+              <Link to="/home" className="-m-1.5 p-1.5"><div className='text-xl font-medium'>iNotebook</div> </Link>
               <button
                 type="button"
                 className="-m-2.5 rounded-md p-2.5 text-gray-700"
@@ -77,22 +78,22 @@ export default function Navbar() {
             <div className="mt-6 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
-                  <Link to="/home" className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/home" ? "active" : ""}`}>
+                  <Link to="/home" onClick={() => setMobileMenuOpen(false)} className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/home" ? "active" : ""}`}>
                     Home
                   </Link>
-                  <Link to="/about" className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/about" ? "active" : ""}`}>
+                  <Link to="/about" onClick={() => setMobileMenuOpen(false)} className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/about" ? "active" : ""}`}>
                     About
                   </Link>
-                  <Link to="/signup" className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/signup" ? "active" : ""}`}>
-                    signup
+                  <Link to="/signup" onClick={() => setMobileMenuOpen(false)} className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/signup" ? "active" : ""}`}>
+                    Signup
                   </Link>
-                  <Link to="/login" className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/login" ? "active" : ""}`}>
-                    Login
+                  <Link to="/help" onClick={() => setMobileMenuOpen(false)} className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 ${location.pathname === "/login" ? "active" : ""}`}>
+                    Help
                   </Link>
                 </div>
                 <div className="py-6">
-                  <Link to="/login" className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
-                    Log in
+                  <Link onClick={() => setMobileMenuOpen(false)} to={isLogin ? "/userProfile" : "/login"}  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">
+                  { isLogin ? (<img src={maleavatar} alt='avatar'className={`h-8 w-auto`}/>) : ("Login") } 
                   </Link>
                 </div>
               </div>
@@ -100,7 +101,6 @@ export default function Navbar() {
           </Dialog.Panel>
         </Dialog>
       </header>
-      {/* <div className='mx-6'><Alert messege={"this is alert messege"} /></div> */}
       <Alert messege={"this is alert messege"} />
       <Outlet />
 

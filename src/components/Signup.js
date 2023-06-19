@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Signup() {
 
     const context = useContext(noteContext);
-    const { showAlert ,host} = context;
+    const { showAlert ,host, setIsLogin} = context;
     const [details, setDetails] = useState({name:"", email: "", password: "", confirmPassword: ""})
     let navigate  = useNavigate();
     const onChange = (e) => {
@@ -45,6 +45,7 @@ export default function Signup() {
           await showAlert("Welcome to iNotebook");
           localStorage.setItem("token", json.token);
           navigate("/");
+          setIsLogin(true);
           // console.log(json);
         } else {
           await showAlert(json.errors[0].msg);

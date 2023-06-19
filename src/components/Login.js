@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Login() {
 
     const context = useContext(noteContext);
-    const { showAlert ,host} = context;
+    const { showAlert , setIsLogin ,host} = context;
     const [details, setDetails] = useState({ email: "", password: ""})
     let navigate  = useNavigate();
     const onChange = (e) => {
@@ -28,8 +28,7 @@ export default function Login() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "auth-token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjQ3MDQ4YjkyM2FjYWRhOTI4MTY3ZjZhIn0sImlhdCI6MTY4NTE4ODI3MH0.JwwfY6dU30AgkCr4anid9TTptohgMfbs0hHrk8MhPR0",
+            "auth-token": localStorage.getItem('token')
           },
           body: JSON.stringify({ email: details.email, password: details.password }),
         });
@@ -39,6 +38,7 @@ export default function Login() {
           await showAlert("You're Logged in");
           localStorage.setItem("token", json.token);
           navigate("/");
+          setIsLogin(true);
           // console.log(json);
         } else {
           await showAlert(json.errors[0].msg);
